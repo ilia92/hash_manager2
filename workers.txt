@@ -1,0 +1,15 @@
+#miner_name	#hash	#ip		#miner	#res_ip		#comment
+#ilia-pc        55      192.168.11.10	trm	ilia-pc-snf
+
+mobile1		450	192.168.22.111	lol	192.168.22.141	NV
+mobile2         450     192.168.22.112	lol	192.168.22.142	NV
+nanovn		850	192.168.22.113	lol	192.168.22.143	NV
+samoten		850     192.168.22.114	lol	192.168.22.144	NV
+#reds		3379    192.168.22.115	lol	192.168.22.145	AMD
+#kirka		650     192.168.22.116	lol	192.168.22.146	AMD
+tejkoat		360	192.168.22.117	lol	192.168.22.147	NV
+
+
+dimdim          418     192.168.22.121	lol	192.168.22.151	--exclude
+#tigri		181     192.168.22.122	lol	n_a.na.na.na	--exclude
+#ventus		362     192.168.22.123	lol	192.168.22.153	--exclude

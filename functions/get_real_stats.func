@@ -1,0 +1,49 @@
+#!/bin/bash
+
+get_real_stats() {
+
+local rig=$1
+printf "Getting stats for: $rig, miner: ${rigs[${rig}_miner]} "
+case ${rigs[${rig}_miner]} in
+
+  3333|3335)
+    curl_min_hash_a[$j]=`echo '{"id":0,"jsonrpc":"2.0","method":"miner_getstat2"}' | nc -w 2 $w_ip $w_port | jq '.result' | jq -r '.[2]' | awk -F';' '{print $1}' | sed "s|...$||g"`
+    ;;
+
+  65078)
+    curl_min_hash_a[$j]=`echo summary | nc -w 2 $w_ip $w_port | grep -o -P '(?<=30s=).*(?=,KHS av)' | cut -d. -f1`
+    ;;
+
+  42010)
+    curl_min_hash_a[$j]=`timeout $curl_timeout curl --silent $w_ip_port/stat |  jq -r '.devices[].speed' | awk '{s+=$1} END {printf("%.0f",s/1000000)}'`
+    ;;
+
+  4059)
+    curl_min_hash_a[$j]=`timeout $curl_timeout curl --silent $w_ip_port/summary | jq ".hashrate/1000000" | cut -d. -f1`
+    ;;
+
+  22333)
+    curl_min_hash_a[$j]=`timeout $curl_timeout curl --silent $w_ip_port/api/v1/status | jq -r .miner.total_hashrate_raw | sed 's|......\..*||g'`
+    ;;
+
+  44444|lolminer|lol)
+    rigs[${rig}_real_hash]=`timeout 3 curl --silent ${rigs[${rig}_ip]}:44444/summary | jq .Algorithms[].Total_Performance | sed 's|\..*||g'`
+    ;;
+
+  *)
+    printf "${rigs[${rig}_miner]} - Unknown miner\n"
+    ;;
+esac
+rigs[${rig}_hash_diff]=$((${rigs[${rig}_real_hash]}-${rigs[${rig}_target_hash]}))
+rigs[${rig}_hash_diff_perc]=$((${rigs[${rig}_hash_diff]}*100 / ${rigs[${rig}_target_hash]}))
+
+if [[ ${rigs[${rig}_hash_diff_perc]} -le -100 ]] ; then
+    rigs[${rig}_is_issue]=2
+elif [[ ${rigs[${rig}_hash_diff_perc]} -eq -5 ]] ; then
+    rigs[${rig}_is_issue]=1
+else
+    rigs[${rig}_is_issue]=0
+fi
+
+printf "real_hash: ${rigs[${rig}_real_hash]}\n"
+}
