@@ -1,0 +1,35 @@
+#!/bin/bash
+
+notify(){
+
+telegram_notification=
+
+#print_full_stats
+
+for rig in "${chosenNames[@]}"; do
+
+# When there IS an issue
+if [[ rigs[${rig}_is_issue] -ne 0 ]] && [[ rigs[${rig}_notify] -lt $messages_giveup ]]; then
+    telegram_notification=`printf '%s\n%s  \t%s\n' "${telegram_notification}" "DOWN: $rig" "${rigs[${rig}_hash_diff_perc]} %"`
+    rigs[${rig}_notify]=$((rigs[${rig}_notify]+1))
+        if [[ rigs[${rig}_notify] -eq 1 ]]; then # 1st run
+        printf "$rig ${rigs[${rig}_notify]}\n" >> $workers_down_file
+        else
+        sed -i "s/$rig.*/$rig ${rigs[${rig}_notify]}/g" $workers_down_file
+        fi
+# When there was an issue and message sent, but recovered.
+elif [[ rigs[${rig}_is_issue] -eq 0 ]] && [[ rigs[${rig}_notify] -gt 0 ]]; then
+    telegram_notification=`printf '%s\n%s\n' "${telegram_notification}" "UP: $rig"`
+    rigs[${rig}_notify]=
+    sed -i -n "/$rig/!p" $workers_down_file
+fi
+
+done
+
+
+if [[ "$telegram_notification" ]]; then
+printf '%s\n' "TELEGRAM: $telegram_notification"
+sendtext "$telegram_notification"
+fi
+
+}

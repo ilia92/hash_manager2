@@ -7,10 +7,10 @@ local workers_file_read=`cat $workers_file | cut -f1 -d"#" | sed '/^\s*$/d'`
 
 # Creating 2D Array. Ref: https://github.com/dylanaraps/pure-bash-bible/issues/41
 #declare -A rigs=()
-#declare -a rigNames=()
+#declare -a allRigsNames=()
 
 addrig() {
-    rigNames+=("$1")
+    allRigsNames+=("$1")
     rigs["$1_target_hash"]="$2"
     rigs["$1_ip"]="$3"
     rigs["$1_miner"]="$4"
@@ -25,9 +25,20 @@ do
 done <<< $workers_file_read
 
 
-#for rig in "${rigNames[@]}"; do
+#for rig in "${allRigsNames[@]}"; do
 #    printf "NAME: $rig ${rigs[${rig}_name]}\ttaget_hash: ${rigs[${rig}_target_hash]}\t\tminer: ${rigs[${rig}_miner]}\tIP: ${rigs[${rig}_ip]}\ttasmota_IP: ${rigs[${rig}_tasmotaip]}\n"
 #done
+
+
+local workers_down_file_read=`cat $workers_down_file`
+local is_changed
+
+# Read workers_down_file and put it into rigs[${rig}_notify]
+while IFS= read -r line;
+do
+     rig=`printf "$line" | awk {'print $1'}`
+     rigs[${rig}_notify]=`printf "$line" | awk {'print $2'}`
+done <<< $workers_down_file_read
 
 printf "INFO: File $workers_file saved in array rigs\n"
 }

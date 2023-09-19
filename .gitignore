@@ -1,2 +1,5 @@
+custom_scripts/*
 workers.txt
 manager.conf
+cache.txt
+.workers_down

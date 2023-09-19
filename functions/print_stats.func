@@ -1,0 +1,33 @@
+#!/bin/bash
+
+print_full_stats() {
+    printf "Check time: "
+    date '+%Y-%m-%d %H:%M'
+    printf "NAME\t\ttarget\tminer\tIP\t\ttasmota_IP\treal\th_diff\tperc\tis_issue\tnotified\n"
+for rig in "${chosenNames[@]}"; do
+    printf "$rig\t${rigs[${rig}_name]}\t${rigs[${rig}_target_hash]}\t${rigs[${rig}_miner]}\t${rigs[${rig}_ip]}\t${rigs[${rig}_tasmotaip]}\t${rigs[${rig}_real_hash]}\t${rigs[${rig}_hash_diff]}\t${rigs[${rig}_hash_diff_perc]}\t${rigs[${rig}_is_issue]}\t\t${rigs[${rig}_notify]}\n"
+done
+}
+
+
+print_short_stats() {
+    printf "Check time: "
+    date '+%Y-%m-%d %H:%M'
+    printf "NAME\t\ttrgt\treal\tdiff\tperc\n"
+for rig in "${chosenNames[@]}"; do
+    printf "$rig\t${rigs[${rig}_name]}\t${rigs[${rig}_target_hash]}\t${rigs[${rig}_real_hash]}\t${rigs[${rig}_hash_diff]}\t${rigs[${rig}_hash_diff_perc]}\n"
+done
+}
+
+
+print_problem_stats() {
+    printf "Check time: "
+    date '+%Y-%m-%d %H:%M'
+    printf "NAME\t\ttrgt\treal\tdiff\tperc\n"
+for rig in "${chosenNames[@]}"; do
+    if [[ rigs[${rig}_is_issue] -ne 0 ]] ; then
+    printf "$rig\t${rigs[${rig}_name]}\t${rigs[${rig}_target_hash]}\t${rigs[${rig}_real_hash]}\t${rigs[${rig}_hash_diff]}\t${rigs[${rig}_hash_diff_perc]}\n"
+    fi
+
+done
+}
