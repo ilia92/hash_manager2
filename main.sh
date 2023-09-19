@@ -33,9 +33,9 @@ case "$1" in
         ("rigstart") ;;
         ("softres")  ;;
         ("full") result=`chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; print_full_stats` ;;
-	("recheck") result=`chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_full_stats > $hash_checker_results_file; cat $hash_checker_results_file` ;;
+	("recheck") result=`chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file; printf "Recheck done! New result: /cache"` ;;
         ("cache") result=`cat $hash_checker_results_file`;;
-        ("cron") result=`chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_full_stats > $hash_checker_results_file; cat $hash_checker_results_file` ;;
+        ("cron") result=`chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file; cat $hash_checker_results_file` ;;
         ("custom1") result=`$DIR/custom_scripts/custom1.sh` ;;
 	(*) result="Unknown command!" ;;
 esac

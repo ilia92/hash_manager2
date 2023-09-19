@@ -55,13 +55,14 @@ case "$command" in
 	("") ;;
 	("/test") result="Telegram API Test PASS!" ;;
         ("/help") result="$help_section" ;;
-        ("/pinger") result=`chosenNames=($arg) ; check_existence ; get_rig_stats > /dev/null ; print_short_stats`;;
+#        ("/pinger") result=`chosenNames=($arg) ; check_existence ; get_rig_stats > /dev/null ; print_short_stats`;;
+        ("/pinger") result=`$DIR/main.sh pinger $arg`;;
         ("/rigres") result=`` ;;
         ("/softres") result=`` ;;
-        ("/full") result=`chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; print_short_stats` ;;
-	("/recheck") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_short_stats > $hash_checker_results_file ; result="Recheck done! New result: /cache" ;;
-        ("/cache") result=`cat $hash_checker_results_file` ;;
-        ("/custom1") result=`$DIR/custom_scripts/custom1.sh` ;;
+        ("/full") result=`$DIR/main.sh full` ;;
+	("/recheck") result=`$DIR/main.sh recheck` ;;
+        ("/cache") result=`$DIR/main.sh cache` ;;
+        ("/custom1") result=`$DIR/main.sh custom1` ;;
 	(*) result="Unknown command!" ;;
 esac
 

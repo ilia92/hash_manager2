@@ -28,7 +28,7 @@ done
 
 
 if [[ "$telegram_notification" ]]; then
-printf '%s\n' "TELEGRAM: $telegram_notification"
+#printf '%s\n' "TELEGRAM: $telegram_notification"
 sendtext "$telegram_notification"
 fi
 
