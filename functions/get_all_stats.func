@@ -1,0 +1,9 @@
+#!/bin/bash
+
+get_all_stats() {
+
+for rig in "${rigNames[@]}"; do
+    get_real_stats $rig
+done
+
+}

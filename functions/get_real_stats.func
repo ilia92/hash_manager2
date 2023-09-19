@@ -3,7 +3,7 @@
 get_real_stats() {
 
 local rig=$1
-printf "Getting stats for: $rig, miner: ${rigs[${rig}_miner]} "
+printf "INFO: Getting stats for: $rig, miner: ${rigs[${rig}_miner]} "
 case ${rigs[${rig}_miner]} in
 
   3333|3335)
