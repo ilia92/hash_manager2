@@ -77,8 +77,9 @@ done
 rigres(){
 
 softstop > $tmp_message_file
-sleep 20 >> $tmp_message_file
+sleep 30
 sonoff_stop >> $tmp_message_file
+sleep 60
 sonoff_start >> $tmp_message_file
 printf "Done\n" >> $tmp_message_file
 send_message_from_file $tmp_message_file
