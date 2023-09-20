@@ -43,9 +43,9 @@ case "$1" in
         ("help") result="Help" ;;
         ("pinger") format_and_check ; get_rig_stats > /dev/null ; print_short_stats ;;
         ("rigres") format_and_check ; printf "RIG Restart command is running in background.\nAffected: ${chosenNames[*]}\n" ; rigres > /dev/null & ;;
+        ("softres")  format_and_check ; softres ;;
         ("rigstop") format_and_check ; printf "RIG STOP command is running in background.\nAffected: ${chosenNames[*]}\n" ; rigstop > /dev/null & ;;
         ("rigstart") format_and_check ; sonoff_start ;;
-        ("softres")  format_and_check ; softres ;;
         ("full") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; print_full_stats ;;
 	("recheck") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file; printf "Recheck done! New result: /cache" ;;
         ("cron") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file ;;

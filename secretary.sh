@@ -57,8 +57,9 @@ case "$command" in
         ("/help") result="$help_section" ;;
         ("/pinger") result=`$DIR/main.sh pinger $arg`;;
         ("/rigres") result=`$DIR/main.sh rigres $arg` ;;
-        ("/rigstop") result=`$DIR/main.sh rigstop $arg` ;;
         ("/softres") result=`$DIR/main.sh softres $arg` ;;
+        ("/rigstop") result=`$DIR/main.sh rigstop $arg` ;;
+        ("/rigstart") result=`$DIR/main.sh rigstart $arg` ;;
         ("/full") result=`$DIR/main.sh full` ;;
 	("/recheck") result=`$DIR/main.sh recheck` ;;
         ("/cache") result=`$DIR/main.sh cache` ;;
