@@ -12,10 +12,12 @@ local workers_file_read=`cat $workers_file | cut -f1 -d"#" | sed '/^\s*$/d'`
 addrig() {
     allRigsNames+=("$1")
     rigs["$1_target_hash"]="$2"
-    rigs["$1_ip"]="$3"
-    rigs["$1_miner"]="$4"
-    rigs["$1_tasmotaip"]="$5"
-    rigs["$1_comment"]="$6"
+    rigs["$1_farm_id"]="$3"
+    rigs["$1_worker_id"]="$4"
+    rigs["$1_ip"]="$5"
+    rigs["$1_miner"]="$6"
+    rigs["$1_tasmotaip"]="$7"
+    rigs["$1_comment"]="$8"
 }
 
 while IFS= read -r line;

@@ -1,5 +1,21 @@
 #!/bin/bash
 
 sendtext() {
-curl -X POST https://api.telegram.org/bot$telegram_api_key/sendMessage -d chat_id=$chat_id -d text="$1" >/dev/null 2>&1 ;
+text="$1"
+curl -X POST https://api.telegram.org/bot$telegram_api_key/sendMessage -d chat_id=$chat_id -d text="$text" >/dev/null 2>&1 ;
+}
+
+send_message_from_file(){
+local source_file=$1
+
+text=`cat $source_file`
+response=`curl -s -w "\n%{http_code}" -X POST https://api.telegram.org/bot$telegram_api_key/sendMessage -d chat_id=$chat_id -d text="$text"`;
+
+#statusCode=`echo "$response" | tail -1`
+
+#if [[ $statusCode -ge 200 && $statusCode -lt 300 ]]; then
+#printf "Message sent:\n$text\n"
+#rm $source_file
+#fi
+
 }

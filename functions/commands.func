@@ -1,0 +1,98 @@
+#!/bin/bash
+
+sonoff_stop(){
+
+for rig in "${chosenNames[@]}"; do
+printf "%s" "Sending Power OFF: $rig - "
+response=`curl -s -w "\n%{http_code}" "http://${rigs[${rig}_tasmotaip]}/cm?cmnd=Power%200"`
+
+statusCode=`echo "$response" | tail -1`
+if [[ $statusCode -ge 200 && $statusCode -lt 300 ]]; then
+printf '%s\n' "Success"
+else
+printf '%s\n' "FAILED"
+fi
+done
+}
+
+
+sonoff_start(){
+
+for rig in "${chosenNames[@]}"; do
+printf "%s" "Sending Power ON: $rig - "
+response=`curl -s -w "\n%{http_code}" "http://${rigs[${rig}_tasmotaip]}/cm?cmnd=Power%201"`
+
+statusCode=`echo "$response" | tail -1`
+if [[ $statusCode -ge 200 && $statusCode -lt 300 ]]; then
+printf '%s\n' "Success"
+else
+printf '%s\n' "FAILED"
+fi
+
+done
+}
+
+
+softres(){
+
+for rig in "${chosenNames[@]}"; do
+printf "%s" "Sending reboot to: $rig - "
+response=`curl -s -w "\n%{http_code}" \
+         -H "Content-Type: application/json" \
+         -H "Authorization: Bearer $hive_api_key" \
+         -X POST -d '{"command": "reboot", "data": {} }' \
+         "$hiveAPIUrl/farms/${rigs[${rig}_farm_id]}/workers/${rigs[${rig}_worker_id]}/command"`
+
+statusCode=`echo "$response" | tail -1`
+if [[ $statusCode -ge 200 && $statusCode -lt 300 ]]; then
+printf '%s\n' "Success"
+else
+printf '%s\n' "FAILED"
+fi
+
+done
+}
+
+softstop(){
+
+for rig in "${chosenNames[@]}"; do
+printf "%s" "Sending shutdown to: $rig - "
+response=`curl -s -w "\n%{http_code}" \
+         -H "Content-Type: application/json" \
+         -H "Authorization: Bearer $hive_api_key" \
+         -X POST -d '{"command": "shutdown", "data": {} }' \
+         "$hiveAPIUrl/farms/${rigs[${rig}_farm_id]}/workers/${rigs[${rig}_worker_id]}/command"`
+
+statusCode=`echo "$response" | tail -1`
+if [[ $statusCode -ge 200 && $statusCode -lt 300 ]]; then
+printf '%s\n' "Success"
+else
+printf '%s\n' "FAILED"
+fi
+
+done
+}
+
+
+rigres(){
+
+softstop > $tmp_message_file
+sleep 20 >> $tmp_message_file
+sonoff_stop >> $tmp_message_file
+#sonoff_start
+printf "Done\n" >> $tmp_message_file
+send_message_from_file $tmp_message_file
+
+}
+
+
+rigstop(){
+
+softstop > $tmp_message_file
+sleep 20 >> $tmp_message_file
+sonoff_stop >> $tmp_message_file
+printf "Done\n" >> $tmp_message_file
+
+send_message_from_file $tmp_message_file
+
+}

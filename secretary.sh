@@ -6,11 +6,11 @@ source $DIR/main.sh
 #source $DIR/manager.conf
 #source $DIR/functions/sendtext.func
 
-#if [ -z "$STY" ]; then
-#printf "Bot started in background\n"
-#screen -S secretary_bot -X quit > /dev/null
-#exec screen -dm -S secretary_bot /bin/bash $0
-#fi
+if [ -z "$STY" ]; then
+printf "Bot started in background\n"
+screen -S secretary_bot -X quit > /dev/null
+exec screen -dm -S secretary_bot /bin/bash $0
+fi
 
 refresh_rate=1
 
@@ -49,16 +49,16 @@ command=`echo $curr_message_text | grep -o '\/.*' | awk {'print $1'} | sed "s|@$
 # Get everything after the 1st
 arg=`echo $curr_message_text | awk '{$1=""}1'`
 
-printf "$command and $arg"
+#printf "Command: $command\tArgument: $arg\n"
 
 case "$command" in
 	("") ;;
 	("/test") result="Telegram API Test PASS!" ;;
         ("/help") result="$help_section" ;;
-#        ("/pinger") result=`chosenNames=($arg) ; check_existence ; get_rig_stats > /dev/null ; print_short_stats`;;
         ("/pinger") result=`$DIR/main.sh pinger $arg`;;
-        ("/rigres") result=`` ;;
-        ("/softres") result=`` ;;
+        ("/rigres") result=`$DIR/main.sh rigres $arg` ;;
+        ("/rigstop") result=`$DIR/main.sh rigstop $arg` ;;
+        ("/softres") result=`$DIR/main.sh softres $arg` ;;
         ("/full") result=`$DIR/main.sh full` ;;
 	("/recheck") result=`$DIR/main.sh recheck` ;;
         ("/cache") result=`$DIR/main.sh cache` ;;
