@@ -11,6 +11,7 @@ source $DIR/functions/sendtext.func #includes sendtext() send_message_from_file(
 source $DIR/functions/notify.func
 source $DIR/functions/check_existence.func
 source $DIR/functions/commands.func #includes sonoff_stop() sonoff_start() softres() softstop() rigres() rigstop()
+source $DIR/functions/setzero.func
 
 
 workers_file="$DIR/workers.txt"
@@ -50,6 +51,7 @@ case "$1" in
 	("recheck") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file; printf "Recheck done! New result: /cache" ;;
         ("cron") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file ;;
         ("cache") cat $hash_checker_results_file;;
+        ("setzero") format_and_check ; setzero | jq ;;
         ("custom1") $DIR/custom_scripts/custom1.sh ;;
 	(*) printf "Unknown command!\n" ;;
 esac

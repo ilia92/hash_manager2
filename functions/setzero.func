@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+setzero() {
+
+for rig in "${chosenNames[@]}"; do
+
+timeout $curl_timeout curl --silent http://${rigs[${rig}_tasmotaip]}/cm?cmnd=EnergyTotal%200
+timeout $curl_timeout curl --silent http://${rigs[${rig}_tasmotaip]}/cm?cmnd=EnergyToday%200
+timeout $curl_timeout curl --silent http://${rigs[${rig}_tasmotaip]}/cm?cmnd=EnergyYesterday%200
+
+done
+
+}

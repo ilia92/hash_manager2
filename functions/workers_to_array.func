@@ -32,7 +32,7 @@ done <<< $workers_file_read
 #done
 
 
-local workers_down_file_read=`cat $workers_down_file`
+local workers_down_file_read=`cat $workers_down_file 2> /dev/null`
 local is_changed
 
 # Read workers_down_file and put it into rigs[${rig}_notify]
