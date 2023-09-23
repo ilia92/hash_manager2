@@ -1,0 +1,7 @@
+Check time: 2023-09-20 19:24
+NAME		trgt	real	diff	perc
+mobile2		450		-450	-100
+nanovn		950		-950	-100
+samoten		850		-850	-100
+tejkoat		360		-360	-100
+dimdim		418		-418	-100
