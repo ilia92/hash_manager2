@@ -34,8 +34,8 @@ local action_time=$2
 case "$action" in
         ("") printf "$help_section_schedule" ; return ;;
         ("help") printf "$help_section_schedule" ; return ;;
-        ("start") check_action_time ; if printf "$DIR/main.sh rigstart ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ; then printf "Successfully scheduled\n" ; fi ;;
-        ("stop")  check_action_time ; if printf "$DIR/main.sh rigstop ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ; then printf "Successfully scheduled\n" ; fi ;;
+        ("start") check_action_time ; if printf "$DIR/main.sh rigstart ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ; then printf "Successfully scheduled start\n" ; fi ;;
+        ("stop")  check_action_time ; if printf "$DIR/main.sh rigstop ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ; then printf "Successfully scheduled stop\n" ; fi ;;
         ("list") check_action_time ; printf "Scheduled jobs:\n" ; list_schedules ; affected_rigs=`list_schedules | grep -o "main.sh.*" | awk '{$1=$2="";print $0}' | sed 's| |\n|g' |sort|uniq |tr '\n' ' '` ;;
         ("rm") if atrm $2;then printf "Successfully removed job $2\n" ;fi ; return ;;
         (*) printf "Unknown schedule action!\n" ; return
