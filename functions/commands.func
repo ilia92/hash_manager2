@@ -5,6 +5,8 @@ sonoff_stop(){
 for rig in "${chosenNames[@]}"; do
 printf "%s" "Sending Power OFF: $rig - "
 response=`curl -s -w "\n%{http_code}" "http://${rigs[${rig}_tasmotaip]}/cm?cmnd=Power%200"`
+sed -i -n "/$rig/!p" $workers_down_file # delete lines containing this rig name, to avoid duplication
+printf "$rig $((messages_giveup+1))\n" >> $workers_down_file #ignore next alarms, +1 to differentiate
 
 statusCode=`echo "$response" | tail -1`
 if [[ $statusCode -ge 200 && $statusCode -lt 300 ]]; then
@@ -22,6 +24,7 @@ sonoff_start(){
 for rig in "${chosenNames[@]}"; do
 printf "%s" "Sending Power ON: $rig - "
 response=`curl -s -w "\n%{http_code}" "http://${rigs[${rig}_tasmotaip]}/cm?cmnd=Power%201"`
+sed -i -n "/$rig/!p" $workers_down_file #initiate next check
 
 statusCode=`echo "$response" | tail -1`
 if [[ $statusCode -ge 200 && $statusCode -lt 300 ]]; then
