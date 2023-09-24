@@ -31,18 +31,9 @@ local action_time=$2
 #printf "action: $action\n"
 #printf "action time: $action_time\n"
 
-local help_section="Usage:
-./main.sh schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs] - schedules action at requested time
-or
-./main.sh schedule list - lists all pending jobs
-
-Example:
-./main.sh schedule start 07:00 rig1 rig2
-"
-
 case "$action" in
-        ("") ;;
-        ("help") printf "$help_section" ; return ;;
+        ("") printf "$help_section_schedule" ; return ;;
+        ("help") printf "$help_section_schedule" ; return ;;
         ("start") check_action_time ; printf "Start at: $action_time\n" ; printf "$DIR/main.sh rigstart ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ;;
         ("stop")  check_action_time ; printf "Stop at: $action_time\n" ; printf "$DIR/main.sh rigstop ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ;;
         ("list") check_action_time ; printf "Scheduled jobs:\n" ; list_schedules ; affected_rigs=`list_schedules | grep -o "main.sh.*" | awk '{$1=$2="";print $0}' | sed 's| |\n|g' |sort|uniq |tr '\n' ' '` ;;

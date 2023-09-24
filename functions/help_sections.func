@@ -1,0 +1,42 @@
+#!/bin/bash
+
+help_section_main="Usage:
+./main.sh [command] [all/rig1 rig2]
+
+Commands:
+pinger - get rig stats
+rigres - power restart rig(s)
+softres - reboots rig(s)
+rigstop - sends shutdown signal, then power stop
+rigstrt - sends power start signal
+full - gets full stats
+recheck - rechecks and shows only rigs with issues
+cron - checks all rigs and sends notification if issue
+cache - shows cached starts
+schedule - schedules action - stop/start
+setzero - set power to 0
+custom1 - starts custom script located in custom_stripts/custom1.sh
+"
+
+help_section_secretary="
+/help - Print this text
+/pinger [all/names] - Check if rig is UP
+/rigres [all/names] - Power restart rig
+/softres [all/names] - Soft reboot rig
+/rigstop [all/names] - Soft stop, then power stop
+/rigstart [all/names] - Power start rig
+/schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs]
+/full - Check all rigs, show all stats
+/recheck - Recheck rig hashrate, show with issues
+/cache - Show cached results
+/custom1 - Run custom script
+"
+
+help_section_schedule="Usage:
+./main.sh schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs] - schedules action at requested time
+or
+./main.sh schedule list - lists all pending jobs
+
+Example:
+./main.sh schedule start 07:00 rig1 rig2
+"

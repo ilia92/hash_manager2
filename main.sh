@@ -4,6 +4,7 @@ DIR="$(dirname "$(readlink -f "$0")")"
 
 source $DIR/manager.conf
 
+source $DIR/functions/help_sections.func #includes only variables $help_section_main $help_section_secretary $help_section_schedule
 source $DIR/functions/workers_to_array.func
 source $DIR/functions/get_rig_stats.func
 source $DIR/functions/print_stats.func #includes print_full_stats() print_short_stats() print_problem_stats()
@@ -40,27 +41,9 @@ fi
 
 }
 
-main_help_section="Usage:
-./main.sh [command] [all/rig1 rig2]
-
-Commands:
-pinger - get rig stats
-rigres - power restart rig(s)
-softres - reboots rig(s)
-rigstop - sends shutdown signal, then power stop
-rigstrt - sends power start signal
-full - gets full stats
-recheck - rechecks and shows only rigs with issues
-cron - checks all rigs and sends notification if issue
-cache - shows cached starts
-schedule - schedules action - stop/start
-setzero - set power to 0
-custom1 - starts custom script located in custom_stripts/custom1.sh
-"
-
 case "$1" in
-	("") ;;
-        ("help") printf "$main_help_section" ; exit ;;
+	("") printf "$help_section_main" ; exit ;;
+        ("help") printf "$help_section_main" ; exit ;;
         ("pinger") format_and_check ; get_rig_stats > /dev/null ; print_short_stats ;;
         ("rigres") format_and_check ; printf "RIG Restart command is running in background.\nAffected: ${chosenNames[*]}\n" ; rigres > /dev/null & ;;
         ("softres")  format_and_check ; softres ;;

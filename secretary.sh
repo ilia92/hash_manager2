@@ -3,8 +3,6 @@
 DIR="$(dirname "$(readlink -f "$0")")"
 
 source $DIR/main.sh
-#source $DIR/manager.conf
-#source $DIR/functions/sendtext.func
 
 if [ -z "$STY" ]; then
 printf "Bot started in background\n"
@@ -17,20 +15,6 @@ refresh_rate=1
 curl --silent https://api.telegram.org/bot$telegram_api_key/getMe | jq
 username=`curl --silent https://api.telegram.org/bot$telegram_api_key/getMe | jq -M -r .result.username`
 date
-
-help_section="
-/help - Print this text
-/pinger [all/names] - Check if rig is UP
-/rigres [all/names] - Power restart rig
-/softres [all/names] - Soft reboot rig
-/rigstop [all/names] - Soft stop, then power stop
-/rigstart [all/names] - Power start rig
-/schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs]
-/full - Check all rigs, show all stats
-/recheck - Recheck rig hashrate, show with issues
-/cache - Show cached results
-/custom1 - Run custom script
-"
 
 while [ 1 ]
 do
