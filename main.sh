@@ -35,7 +35,7 @@ tmp_2nd_arg=$2 # specific for format_and_check(), 2nd arg cannot be checked with
 format_and_check() {
 
 if ! [ "$tmp_2nd_arg" ]; then
-printf "ERROR: This command requires additional argument!\n"
+printf "ERROR: This command requires additional argument!\nTry help\n"
 exit 1
 fi
 

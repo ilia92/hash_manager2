@@ -10,8 +10,8 @@ elif [ "$action_time" = 'sunset' ]; then
 action_time=`hdate -s -l "$coordinate_latitude" -L "$coordinate_longitude" -z $(date +"%z" | sed 's|0||g') | grep sunset | grep -o '[0-9][0-9]:[0-9][0-9]'`
 elif  [ "$action" = 'list' ]; then
 true #do nothing
-elif ! [[ $action_time =~ ^[0-9][0-9]:[0-9][0-9]$ ]] || [[ $action_time =~ ^[0-9][0-9]$ ]] ; then
-printf "ERROR: Unknown time format\n"
+elif ! [[ $(date "+%H:%M" -d "$action_time" 2>/dev/null) ]]; then
+printf "ERROR: Unknown time format. Use HH:MM\n"
 exit 1
 fi
 

@@ -37,7 +37,7 @@ help_section_schedule="Usage:
 or
 ./main.sh schedule list - lists all pending jobs
 or
-./main.sj schedule rm [job_id]
+./main.sh schedule rm [job_id]
 
 Example:
 ./main.sh schedule start 07:00 rig1 rig2
