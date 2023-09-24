@@ -31,7 +31,13 @@ workers_to_array $workers_file > /dev/null
 
 chosenNames=("${@:2}")
 
+tmp_2nd_arg=$2 # specific for format_and_check(), 2nd arg cannot be checked within a function, so setting it to variabl
 format_and_check() {
+
+if ! [ "$tmp_2nd_arg" ]; then
+printf "ERROR: This command requires additional argument!\n"
+exit 1
+fi
 
 if [ "${chosenNames[0]}" = 'all' ]; then
 chosenNames=("${allRigsNames[@]}")
@@ -42,7 +48,7 @@ fi
 }
 
 case "$1" in
-	("") printf "$help_section_main" ; exit ;;
+	("") printf "$help_section_main" ;;
         ("help") printf "$help_section_main" ; exit ;;
         ("pinger") format_and_check ; get_rig_stats > /dev/null ; print_short_stats ;;
         ("rigres") format_and_check ; printf "RIG Restart command is running in background.\nAffected: ${chosenNames[*]}\n" ; rigres > /dev/null & ;;

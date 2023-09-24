@@ -5,7 +5,7 @@ check_existence() {
 for test in "${chosenNames[@]}"; do
     if ! [[ " ${allRigsNames[@]} " == *" ${test} "* ]]; then
     printf "ERROR: No such name $test, exiting\n"
-    exit
+    exit 1
     fi
 done
 

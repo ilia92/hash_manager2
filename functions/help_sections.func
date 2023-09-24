@@ -36,6 +36,8 @@ help_section_schedule="Usage:
 ./main.sh schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs] - schedules action at requested time
 or
 ./main.sh schedule list - lists all pending jobs
+or
+./main.sj schedule rm [job_id]
 
 Example:
 ./main.sh schedule start 07:00 rig1 rig2

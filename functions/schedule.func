@@ -12,7 +12,7 @@ elif  [ "$action" = 'list' ]; then
 true #do nothing
 elif ! [[ $action_time =~ ^[0-9][0-9]:[0-9][0-9]$ ]] || [[ $action_time =~ ^[0-9][0-9]$ ]] ; then
 printf "ERROR: Unknown time format\n"
-exit
+exit 1
 fi
 
 }
@@ -37,7 +37,9 @@ case "$action" in
         ("start") check_action_time ; printf "Start at: $action_time\n" ; printf "$DIR/main.sh rigstart ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ;;
         ("stop")  check_action_time ; printf "Stop at: $action_time\n" ; printf "$DIR/main.sh rigstop ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ;;
         ("list") check_action_time ; printf "Scheduled jobs:\n" ; list_schedules ; affected_rigs=`list_schedules | grep -o "main.sh.*" | awk '{$1=$2="";print $0}' | sed 's| |\n|g' |sort|uniq |tr '\n' ' '` ;;
-        (*) printf "Unknown action!\n" ;;
+        ("rm") if atrm $2;then printf "Successfully removed job $2\n" ;fi ; return ;;
+        (*) printf "Unknown schedule action!\n" ; return
+ ;;
 esac
 
 printf "Affected: $affected_rigs"

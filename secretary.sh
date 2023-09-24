@@ -2,7 +2,7 @@
 
 DIR="$(dirname "$(readlink -f "$0")")"
 
-source $DIR/main.sh
+source $DIR/main.sh > /dev/null 2>&1
 
 if [ -z "$STY" ]; then
 printf "Bot started in background\n"
@@ -42,13 +42,13 @@ arg=`echo $curr_message_text | awk '{$1=""}1'`
 case "$command" in
 	("") ;;
 	("/test") result="Telegram API Test PASS!" ;;
-        ("/help") result="$help_section" ;;
+        ("/help") result="$help_section_secretary" ;;
         ("/pinger") result=`$DIR/main.sh pinger $arg`;;
         ("/rigres") result=`$DIR/main.sh rigres $arg` ;;
         ("/softres") result=`$DIR/main.sh softres $arg` ;;
         ("/rigstop") result=`$DIR/main.sh rigstop $arg` ;;
         ("/rigstart") result=`$DIR/main.sh rigstart $arg` ;;
-        ("/schedule") result=`$DIR/main.sh schedule $arg` ;;
+        ("/schedule") result=`$DIR/main.sh schedule $arg | sed "s|./main.sh |/|g"` ;;
         ("/full") result=`$DIR/main.sh full` ;;
 	("/recheck") result=`$DIR/main.sh recheck` ;;
         ("/cache") result=`$DIR/main.sh cache` ;;
