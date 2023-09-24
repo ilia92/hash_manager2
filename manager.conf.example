@@ -1,5 +1,7 @@
 # API key HiveOS
-hive_api_key=
+hive_api_key=""
+# Hive API URL
+hiveAPIUrl='https://api2.hiveos.farm/api/v2'
 # Check type: local/hive
 # local (preffered) - means the bot will ask the machines per IP. This requires direct access to IP, port allow on every machine
 # (not implemented) hive - means the bot will get hash info with API requests to Hive
@@ -12,15 +14,26 @@ command_type=hive
 
 
 # API key Telegram
-telegram_api_key=
+telegram_api_key=""
 # Telegram Chat ID
 chat_id=""
 
 # Messages to be sent to the chat, after which the bot will stop messaging, if no changes
-messages_giveup=3
+messages_giveup=2
+
+# Used for function schedule sunset/sunrise get it from Google Maps at easiest
+# format coordinate_latitude="[NS]yy[.yyy]"
+coordinate_latitude="N00.0000"
+coordinate_longitude="E00.0000"
 
 # Temporary file, in which the resilts will be saved
-hash_checker_results_file="$DIR/cache.txt"
+hash_checker_results_file="$DIR/tmp/.cache"
+
+# Temporary file, in which workers and notification counts are saved
+workers_down_file="$DIR/tmp/.workers_down"
+
+# Temporary file, which will be used for messages
+tmp_message_file="$DIR/tmp/.tmp_message"
 
 # Timeout of the Curl queries to the rigs
 curl_timeout=3

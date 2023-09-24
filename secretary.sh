@@ -19,13 +19,17 @@ username=`curl --silent https://api.telegram.org/bot$telegram_api_key/getMe | jq
 date
 
 help_section="
-/help - Prints this text
-/pinger name - Check if rig is UP
-/rigres name - Restarts rig
-/softres name - Soft restart for a rig
-/full - Check all rigs
-/recheck - Rechecks rig hashrate
-/cache - Shows cached results
+/help - Print this text
+/pinger [all/names] - Check if rig is UP
+/rigres [all/names] - Power restart rig
+/softres [all/names] - Soft reboot rig
+/rigstop [all/names] - Soft stop, then power stop
+/rigstart [all/names] - Power start rig
+/schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs]
+/full - Check all rigs, show all stats
+/recheck - Recheck rig hashrate, show with issues
+/cache - Show cached results
+/custom1 - Run custom script
 "
 
 while [ 1 ]
@@ -60,6 +64,7 @@ case "$command" in
         ("/softres") result=`$DIR/main.sh softres $arg` ;;
         ("/rigstop") result=`$DIR/main.sh rigstop $arg` ;;
         ("/rigstart") result=`$DIR/main.sh rigstart $arg` ;;
+        ("/schedule") result=`$DIR/main.sh schedule $arg` ;;
         ("/full") result=`$DIR/main.sh full` ;;
 	("/recheck") result=`$DIR/main.sh recheck` ;;
         ("/cache") result=`$DIR/main.sh cache` ;;

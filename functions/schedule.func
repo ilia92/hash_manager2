@@ -1,0 +1,57 @@
+#!/bin/bash
+
+check_action_time() {
+
+if [ "$action_time" = 'sunrise' ]; then
+#printf "Sunrise\n"
+action_time=`hdate -s -l "$coordinate_latitude" -L "$coordinate_longitude" -z $(date +"%z" | sed 's|0||g') | grep sunrise | grep -o '[0-9][0-9]:[0-9][0-9]'`
+elif [ "$action_time" = 'sunset' ]; then
+#printf "Sunset\n"
+action_time=`hdate -s -l "$coordinate_latitude" -L "$coordinate_longitude" -z $(date +"%z" | sed 's|0||g') | grep sunset | grep -o '[0-9][0-9]:[0-9][0-9]'`
+elif  [ "$action" = 'list' ]; then
+true #do nothing
+elif ! [[ $action_time =~ ^[0-9][0-9]:[0-9][0-9]$ ]] || [[ $action_time =~ ^[0-9][0-9]$ ]] ; then
+printf "ERROR: Unknown time format\n"
+exit
+fi
+
+}
+
+
+list_schedules(){
+for j in $(atq | sort -k6,6 -k3,3M -k4,4 -k5,5 |cut -f 1); do atq |grep -P "^$j\t" ;at -c "$j" | tail -n 2; done
+}
+
+
+schedule(){
+
+local action=$1
+local action_time=$2
+
+#printf "action: $action\n"
+#printf "action time: $action_time\n"
+
+local help_section="Usage:
+./main.sh schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs] - schedules action at requested time
+or
+./main.sh schedule list - lists all pending jobs
+
+Example:
+./main.sh schedule start 07:00 rig1 rig2
+"
+
+case "$action" in
+        ("") ;;
+        ("help") printf "$help_section" ; return ;;
+        ("start") check_action_time ; printf "Start at: $action_time\n" ; printf "$DIR/main.sh rigstart ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ;;
+        ("stop")  check_action_time ; printf "Stop at: $action_time\n" ; printf "$DIR/main.sh rigstop ${chosenNames[*]} \n" | at $action_time 2>&1 | grep job ;;
+        ("list") check_action_time ; printf "Scheduled jobs:\n" ; list_schedules ; affected_rigs=`list_schedules | grep -o "main.sh.*" | awk '{$1=$2="";print $0}' | sed 's| |\n|g' |sort|uniq |tr '\n' ' '` ;;
+        (*) printf "Unknown action!\n" ;;
+esac
+
+printf "Affected: $affected_rigs"
+for rig in "${chosenNames[@]}"; do
+printf "$rig "
+done
+printf "\n"
+}

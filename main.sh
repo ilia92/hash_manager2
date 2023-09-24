@@ -11,6 +11,7 @@ source $DIR/functions/sendtext.func #includes sendtext() send_message_from_file(
 source $DIR/functions/notify.func
 source $DIR/functions/check_existence.func
 source $DIR/functions/commands.func #includes sonoff_stop() sonoff_start() softres() softstop() rigres() rigstop()
+source $DIR/functions/schedule.func
 source $DIR/functions/setzero.func
 
 
@@ -39,9 +40,27 @@ fi
 
 }
 
+main_help_section="Usage:
+./main.sh [command] [all/rig1 rig2]
+
+Commands:
+pinger - get rig stats
+rigres - power restart rig(s)
+softres - reboots rig(s)
+rigstop - sends shutdown signal, then power stop
+rigstrt - sends power start signal
+full - gets full stats
+recheck - rechecks and shows only rigs with issues
+cron - checks all rigs and sends notification if issue
+cache - shows cached starts
+schedule - schedules action - stop/start
+setzero - set power to 0
+custom1 - starts custom script located in custom_stripts/custom1.sh
+"
+
 case "$1" in
 	("") ;;
-        ("help") result="Help" ;;
+        ("help") printf "$main_help_section" ; exit ;;
         ("pinger") format_and_check ; get_rig_stats > /dev/null ; print_short_stats ;;
         ("rigres") format_and_check ; printf "RIG Restart command is running in background.\nAffected: ${chosenNames[*]}\n" ; rigres > /dev/null & ;;
         ("softres")  format_and_check ; softres ;;
@@ -51,6 +70,7 @@ case "$1" in
 	("recheck") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file; printf "Recheck done! New result: /cache" ;;
         ("cron") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file ;;
         ("cache") cat $hash_checker_results_file;;
+        ("schedule") chosenNames=("${@:4}") ; format_and_check ; schedule $2 $3;;
         ("setzero") format_and_check ; setzero | jq ;;
         ("custom1") $DIR/custom_scripts/custom1.sh ;;
 	(*) printf "Unknown command!\n" ;;
