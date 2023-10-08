@@ -26,7 +26,8 @@ messages_giveup=2
 coordinate_latitude="N00.0000"
 coordinate_longitude="E00.0000"
 # Offset for sunrise/sunset - positive values means later X minutes than sunrise; X minutes prior sunset
-offset_minutes=0
+offset_minutes_sunrise=0
+offset_minutes_sunrise=0
 
 # Temporary file, in which the resilts will be saved
 hash_checker_results_file="$DIR/tmp/.cache"
