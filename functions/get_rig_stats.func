@@ -11,8 +11,8 @@ case ${rigs[${rig}_miner]} in
     curl_min_hash_a[$j]=`echo '{"id":0,"jsonrpc":"2.0","method":"miner_getstat2"}' | nc -w 2 $w_ip $w_port | jq '.result' | jq -r '.[2]' | awk -F';' '{print $1}' | sed "s|...$||g"`
     ;;
 
-  65078)
-    curl_min_hash_a[$j]=`echo summary | nc -w 2 $w_ip $w_port | grep -o -P '(?<=30s=).*(?=,KHS av)' | cut -d. -f1`
+  65078|trm)
+    rigs[${rig}_real_hash]=`echo summary | nc -w $curl_timeout ${rigs[${rig}_ip]} 65078 | grep -o -P '(?<=30s=).*(?=,KHS av)' | cut -d. -f1`
     ;;
 
   42010)
