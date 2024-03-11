@@ -8,7 +8,7 @@ pinger - get rig stats
 rigres - power restart rig(s)
 softres - reboots rig(s)
 rigstop - sends shutdown signal, then power stop
-rigstrt - sends power start signal
+rigstart - sends power start signal
 full - gets full stats
 recheck - rechecks and shows only rigs with issues
 cron - checks all rigs and sends notification if issue
