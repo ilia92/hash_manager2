@@ -2,14 +2,19 @@
 
 check_action_time() {
 
-if [ "$action_time" = 'sunrise' ]; then
+if [[ "$action_time" = "sunrise"* ]]; then
 #printf "Sunrise\n"
+offset_minutes_sunrise=`echo $action_time | grep -o '[+-][[:digit:]]*'`
+action_time=`echo $action_time | grep -o sunrise`
 action_time=`hdate -s -l "$coordinate_latitude" -L "$coordinate_longitude" -z $(date +"%z" | sed 's|0||g') | grep sunrise | grep -o '[0-9][0-9]:[0-9][0-9]'`
 action_time=`date -d "$(date -Iseconds -d "$action_time") $offset_minutes_sunrise minutes" "+%H:%M"`
-elif [ "$action_time" = 'sunset' ]; then
+elif [[ "$action_time" = "sunset"* ]]; then
 #printf "Sunset\n"
+offset_minutes_sunset=`echo $action_time | grep -o '[+-][[:digit:]]*'`
+action_time=`echo $action_time | grep -o sunset`
 action_time=`hdate -s -l "$coordinate_latitude" -L "$coordinate_longitude" -z $(date +"%z" | sed 's|0||g') | grep sunset | grep -o '[0-9][0-9]:[0-9][0-9]'`
-action_time=`date -d "$(date -Iseconds -d "$action_time") $((-1*${offset_minutes_sunset})) minutes" "+%H:%M"`
+#action_time=`date -d "$(date -Iseconds -d "$action_time") $((-1*${offset_minutes_sunset})) minutes" "+%H:%M"`
+action_time=`date -d "$(date -Iseconds -d "$action_time") $offset_minutes_sunset minutes" "+%H:%M"`
 elif  [ "$action" = 'list' ]; then
 true #do nothing
 elif ! [[ $(date "+%H:%M" -d "$action_time" 2>/dev/null) ]]; then

@@ -25,7 +25,7 @@ help_section_secretary="
 /softres [all/names] - Soft reboot rig
 /rigstop [all/names] - Soft stop, then power stop
 /rigstart [all/names] - Power start rig
-/schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs]
+/schedule [start/stop] [hh:mm/sunset(+-min)/sunrise(+-min)] [all/rigs]
 /full - Check all rigs, show all stats
 /recheck - Recheck rig hashrate, show with issues
 /cache - Show cached results
@@ -33,7 +33,7 @@ help_section_secretary="
 "
 
 help_section_schedule="Usage:
-./main.sh schedule [start/stop] [hh:mm/sunset/sunrise] [all/rigs] - schedules action at requested time
+./main.sh schedule [start/stop] [hh:mm/sunset(+-min)/sunrise(+-min)] [all/rigs] - schedules action at requested time
 or
 ./main.sh schedule list - lists all pending jobs
 or
