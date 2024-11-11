@@ -59,7 +59,7 @@ case "$1" in
 	("recheck") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file; printf "Recheck done! New result: /cache" ;;
         ("cron") chosenNames=("${allRigsNames[@]}") ; get_rig_stats > /dev/null ; notify ; print_problem_stats > $hash_checker_results_file ;;
         ("cache") cat $hash_checker_results_file;;
-        ("schedule") chosenNames=("${@:4}") ; format_and_check ; schedule $2 $3;;
+        ("schedule") if [ "$2" != "rm" ]; then chosenNames=("${@:4}") ; format_and_check; fi ; schedule "${@:2}";;
         ("setzero") format_and_check ; setzero | jq ;;
         ("custom1") $DIR/custom_scripts/custom1.sh ;;
 	(*) printf "Unknown command!\n" ;;
